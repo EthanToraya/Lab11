@@ -1,8 +1,56 @@
+
+/**
+ * File: CSCI_1302/JavaFXTest/src/locker_keypad/Lab11Prob01.java
+ * Package: src
+ * @author Ethan Toraya, Nathan Ross
+ * Created on: Apr 25, 2025
+ * Last Modified:  Apr 25, 2025
+ * Description:  Reading a dat file and writing it back out
+ */
+
 import java.io.*;
 
 public class Lab11Prob01 {
-  public static void main(String[] args) throws IOException {
-    try (
-      // Create an 
-  }
+    public static void main(String[] args) {
+//        // Input and output file paths
+//        String inputFile = "src/people.dat";
+//        String outputFile = "src/people-copy.dat";
+
+        try (
+            DataInputStream dis = new DataInputStream(new FileInputStream("src/people.dat"));
+            DataOutputStream dos = new DataOutputStream(new FileOutputStream("src/people-copy.dat"));
+        ) {
+        	int age, zip;
+        	String firstLastName, address;
+        	double salary;
+        	
+            while (true) {
+                try {
+                    // Read data
+                    age = dis.readInt();
+                    firstLastName = dis.readUTF();
+                    address = dis.readUTF();
+                    zip = dis.readInt();
+                    salary = dis.readDouble();
+
+                    // Print to console
+                    System.out.printf("%d %s %s %d %.2f%n",
+                            age, firstLastName, address, zip, salary);
+
+                    //Write to new file
+                    dos.writeInt(age);
+                    dos.writeUTF(firstLastName);
+                    dos.writeUTF(address);
+                    dos.writeInt(zip);
+                    dos.writeDouble(salary);
+                } catch (EOFException eof) {
+                    // End of file reached
+                    break;
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error processing file: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 }
